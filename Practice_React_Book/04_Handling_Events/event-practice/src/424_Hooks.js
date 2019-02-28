@@ -4,7 +4,7 @@ function PracticeHooks() {
   const [username, setUsername] = useState('');
   const [message, setMessage] = useState('');
 
-  function handleClick() {
+  const handleClick = () => {
     alert(username + ": " + message);
     setUsername('');
     setMessage('');
