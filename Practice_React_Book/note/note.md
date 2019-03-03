@@ -52,4 +52,7 @@
   - componentDidUpdate: 컴포넌트의 업데이트 작업이 끝난 후 호출하는 메서드
   <br />
 
+### 10장 일정 관리 웹 애플리케이션 생성
+  - propagation
+    - 지식 요소에도 onClick 이벤트가 설정되어 있고, 부모 요소에도 onClick 이벤트가 설정되어 있으면 자식 -> 부모 순으로 메서드를 실행하게 된다. 이를 <strong>propagation</strong>이라고 한다. 이를 방지하려면 자식 요소의 onClick 처리 함수 내부에서 <strong>e.stopPropagation</strong> 함수를 호출해준다.
 
