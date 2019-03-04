@@ -54,5 +54,29 @@
 
 ### 10장 일정 관리 웹 애플리케이션 생성
   - propagation
-    - 지식 요소에도 onClick 이벤트가 설정되어 있고, 부모 요소에도 onClick 이벤트가 설정되어 있으면 자식 -> 부모 순으로 메서드를 실행하게 된다. 이를 <strong>propagation</strong>이라고 한다. 이를 방지하려면 자식 요소의 onClick 처리 함수 내부에서 <strong>e.stopPropagation</strong> 함수를 호출해준다.
+    - 지식 요소에도 onClick 이벤트가 설정되어 있고, 부모 요소에도 onClick 이벤트가 설정되어 있으면 자식 -> 부모 순으로 메서드를 실행하게 된다. 이를 **propagation**이라고 한다. 이를 방지하려면 자식 요소의 onClick 처리 함수 내부에서 **e.stopPropagation** 함수를 호출해준다.
+<br />
+
+### 11장 컴포넌트 리렌더링 최적화
+  - 1. 문제점 찾기
+    - 리액트 개발자 도구의 Hightlight Updates 옵션을 활성화. 이 옵션을 활성화 하면 리렌더링 될 때마다 화면에 표시 된다. 리렌더링 빈도에 따라 하늘색->초록색->노란색->빨간색 순으로 나타난다.
+    - 크롬 개발자도구 [Performance] 탭 사용
+      - http://localhost:3000/?react_perf 페이지를 열고 크롬 개발자 도구 클릭하여 Performance탭을 연다. 
+      - 왼쪽 위 **녹화** 버튼(원모양)을 누른 후 문제가 되는 부분을 실행한다.(ex.input 부분에 글을 적는다.) 그런 다음 녹화 중지한다. 
+      - User Timing을 연다. (문제점 파악)
+    - 프로젝트를 작업하면서 버벅거린다고 느낄 때 성능 조사하고 상황에 따라 shouldComponentUpdate를 구현. 
+  - 2. 최적화 진행
+    - 업데이트 될 때만 리렌더링을 하기 위해 조건을 설정
+    - **shouldComponentUpdate** 설정 예시
+    ```javascript
+      shouldComponentUpdate(nextProps, nextState) {
+        return this.props.todos !== nextProps.todos;
+      }
+    ```
+  - 3. 정리
+    - **shouldComponentUpdate**를 구현 상황(불필요한 렌더링을 방지하여 리렌더링 성능 향상)
+      - 컴포넌트 배열이 렌더링되는 리스트 컴포넌트일 때
+      - 리스트 컴포넌트 내부에 있는 아이템 컴포넌트일 때
+      - 하위 컴포넌트 개수가 많으며, 리렌더링되지 말아야 할 상황에서도 리렌더링이 진행될 때
+    - 리스트를 렌더링할 때는 언제나 **shouldComponentUpdate**를 구현하는 것을 습관화.
 
