@@ -278,9 +278,10 @@
       ```
 
   2. Ducks 파일 구조
-    > Ducks 구조에서는 액션 타입, 액션 생성 함수, 리듀서를 한꺼번에 넣어서 관리하는데, 이를 모듈이라 한다. 
     > (Ducks: Redux Reducer Bundles)[https://github.com/erikras/ducks-modular-redux]
     - Ducks 구조에서는 액션 타입, 액션 생성 함수, 리듀서를 한꺼번에 넣어서 관리하는데, 이를 모듈이라 한다.
+    - Ducks 구조로 만드는 리덕스 모듈 생성 흐름
+      - 액션 타입 정의 -> 액션 생성 함수 만들기 -> 초기 상태 정의 -> 리듀서 정의
     ```javascript
       // 액션 타입
       const CREATE = 'my-app/todos/CREATE';
