@@ -167,4 +167,211 @@
   - 스토어는 단 한개. 그 대싱 리듀서를 여러개 만들어서 사용.
   - state는 읽기 전용.
   - 변화는 순수 함수로 구성. 예를들어 리듀서 함수 내부에서 외부 네트워크와 데이터베이스에 직접 접근하면 안 된다.(요청이 실패할 수도 있고, 외부 서버의 반환 값이 변할 수 있기 때문, new Date(), Math.random() 함수등도 사용하면 안됨.)
+<br />
 
+### 14장 리덕스, 더 편하게 사용
+1. (Immutable.js)[https://facebook.github.io/immutable-js/]
+  a. Map
+    > Immutable의 Map은 객체 대신 사용하는 데이터 구조.
+    ```javascript
+      const { Map, fromJS } = Immutable;
+      const data = fromJS({
+        a: 1,
+        b: 2,
+        c: {
+          d: 3,
+          e: 4
+        }
+      });
+    ```
+    - 자바 스크립트 객체로 변환(**toJS**)
+      ```javascript
+        const deserialized = data.toJS();
+        console.lo(deserialized); // { a: 1, b: 2, c: { d: 3, e: 4 }}
+      ```
+    - 특정 키의 값 불러오기(**get**)
+      ```javascript
+        data.get('a');  // 1
+      ```
+    - 깊숙이 위치하는 값 불러오기(**getIn**)
+      ```javascript
+        data.getIn(['c', 'd']);  // 3
+      ```
+    - 값 설정 (**set**)
+      ```javascript
+        const newData = data.set(['a', 4]);
+      ```
+      > set을 한다고 해서 데이터가 실제로 변하는 것은 아니다. 값이 변경된 새 Map을 만드는 것이다.
+      ```javascript
+        console.log(newData === data);  // false
+      ```
+      > 서로 다른 Map이기 때문에 false를 반환한다. 기존 data값은 그대로 남아있고, 변화가 적용된 데이터를 newData에 저장하는 것이다.
+    - 깊숙이 위치하는 값 수정(**setIn**)
+      ```javascript
+        const newData = data.setIn(['c', 'd'], 10);
+      ```
+    - 여러 값 동시에 설정(**mergeIn**)
+      ```javascript
+        const newData = data.mergeIn(['c'], { d: 10, e: 10 });
+      ```
+      - 아래와 같이 입력할 수도 있다.
+      ```javascript
+        const newData = data.setIn(['c', 'd'], 10) 
+                            .setIn(['c', 'e'], 10);
+      ```
+      - 최상의 merge(**merge**)
+      ```javascript
+        const newData = data.merge({ a: 10, b: 10 });
+      ```
+  b. List
+    > Immutable 데이터 구조로 배열 대신 사용. 배열과 동일하게 map, filter, sort, push, pop 함수를 내장하고 있다.
+    ```javascript
+      const { List, Map, fromJS } = Immutable;
+      const list = List([
+        Map({ value: 1 }),
+        Map({ value: 2 })
+      ]);
+      // or
+      const list2 = fromJS([
+        { value: 1 },
+        { value: 2 }
+      ]);
+    ```
+    > fromJS를 사용하면 내부 배열은 List로 만들고, 내부 객체는 Map으로 만든다. **toJs**를 사용하여 일반 배열로 변환.
+    - 값 읽어오기(**get, getIn**)
+      ```javascript
+      // n번째 원소 값은 get(n) 사용
+        list.get(0);
+      // 0번째 아이템의 value값
+        list.getIn([0, 'value']);
+      ```
+    - 아이템 수정(**set, setIn, update**)
+      ```javascript
+      // 원소를 통째로 바꾸고 싶을 때 set 사용.
+      const newList = list.set(0, Map({value: 10}));
+      // List의 Map 내부 값 변경하고 싶을 때 setIn 사용
+      const newList = list.setin([0, 'value'], 10);
+      /* 
+        다른 방법 (update)
+        첫번째 파라미터: 선택할 인덱스 값, 두번째 파라미터: 선택한 원소를 업데이트 하는 함수
+        const newList = list.setIn([9, 'value'], list.getIn([0, 'value'] * 5)); 와 같음 
+      */
+      const newlist = list.update(0, item => item.set('value', item.get('value') * 5));
+      ```
+    - 아이템 추가(**push, unshift**)
+      ```javascript
+        const newList = list.push(Map({value: 3}));
+      // List 맨 뒤가 아니라 맨 앞에 데이터를 추가하고 싶으면 push 대신 unshift를 사용
+        const newList = list.unshift(Map({value: 0}));
+      ```
+    - 아이템 제거(**delete, pop**)
+      ```javascript
+        const newList = list.delete(1); // 인덱스가 1인 아이템 제거.
+        // 마지막 아이템을 제거하고 싶다면 pop을 사용.
+        const newList = list.pop();
+      ```
+    - List 크기 가져오기 (**size, isEmpty**)
+      ```javascript
+        console.log(list.size);
+        // 비어 있는 지 확인
+        list.isEmpty();
+      ```
+
+  2. Ducks 파일 구조
+    > Ducks 구조에서는 액션 타입, 액션 생성 함수, 리듀서를 한꺼번에 넣어서 관리하는데, 이를 모듈이라 한다. 
+    > (Ducks: Redux Reducer Bundles)[https://github.com/erikras/ducks-modular-redux]
+    - Ducks 구조에서는 액션 타입, 액션 생성 함수, 리듀서를 한꺼번에 넣어서 관리하는데, 이를 모듈이라 한다.
+    ```javascript
+      // 액션 타입
+      const CREATE = 'my-app/todos/CREATE';
+      const REMOVE = 'my-app/todos/REMOVE';
+      const TOGGLE = 'my-app/todos/TOGGLE';
+
+      // 액션 생성 함수
+      export const create = (todo) => ({
+        type: CREATE,
+        todo
+      });
+
+      export const remove = (id) => ({
+        type: REMOVE,
+        id
+      });
+
+      export const toggle = (id) => ({
+        type: TOGGLE,
+        id
+      });
+
+      const initialState = {
+        // 초기 상태...
+      }
+
+      // 리듀서
+      export default function reducer(state = initialState, action) {
+        switch (action.type) {
+          // 리듀서 관련 코드...
+        }
+      }
+    ```
+    - 규칙
+      - export default를 이용하여 리듀서를 내보낸다.
+      - export를 이용하여 액션 생성 함수를 내보낸다.
+      - 액션 타입 이름은 npm-module-or-app/reducer/ACTION_TYPE 형식으로 만든다. [라이브러리를 만들거나 애플리케이션을 여러 프로젝트로 나눈 것이 아니라면 맨 앞은 생략해도 된다.(예: counter/INCREMENT)].
+      - 외부 리듀서에서 모듈의 액션 타입이 필요할 때는 액션 타입을 내보낸다.
+
+3. redux-actions를 이용한 더 쉬운 액션 관리
+  ```
+    $ yarn add redux-actions
+  ```
+  ```javascript
+    import { createAction, handleActions } from 'redux-actions';
+  ```
+  a. **createAction**을 이용한 액션 생성 자동화
+    ```javascript
+      // 이전
+      export const increment = (index) => ({
+        type: type.INCREMENT,
+        index
+      });
+      // createAction 사용
+      export const increment = createAction(type.INCREMENT);
+      // 위와 같이 만든 함수에 파라미터를 넣어서 호출하면 아래와 깉다. 
+      increment(3);
+      /* 결과:
+        {
+          type: 'INCREMENT',
+          payload: 3
+        }
+      */
+    ```
+    - 전달받은 파라미터가 여러 개일 때: 액션을 만들면 파라미터로 전달한 객체를 payload로 설정. 
+    ```javascript
+      export const setColor = createAction(types.SET_COLOR);
+      setColor({index: 5, color: '#fff'});
+      /* 결과:
+        {
+          type: 'SET_COLOR',
+          payload: {
+            index: 5,
+            color: '#fff'
+          }
+        }
+      */
+    ```
+    - createAction의 두번째 파라니터에 payload 생성함수를 전달하여 코드상으로 명시할 수 있다.
+    ```javascript
+      export const setColor = createAction(types.SET_COLOR, ,({index, color}) => ({index, color}));
+    ```
+  b. switch 문 대신 **handleActions** 사용
+    - 첫 번째 파라미터로 액션에 따라 실핼할 함수들을 가진 객체를 넣어주고, 두 번째 파라미터로 상태의 기본 값(initialState)을 넣어준다. 
+    ```javascript
+      const reducer = handleActions({
+        INCREMENT: (state, action) => ({
+          counter: state.counter + action.payload
+        }),
+        DECREMENT: (state, action) => ({
+          counter: state.counter - action.payload
+        })
+      }, {counter: 0});
+    ```
