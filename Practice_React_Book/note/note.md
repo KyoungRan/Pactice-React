@@ -68,21 +68,21 @@
 		- User Timing을 연다. (문제점 파악)
     - 프로젝트를 작업하면서 버벅거린다고 느낄 때 성능 조사하고 상황에 따라 shouldComponentUpdate를 구현.
 
-  2. 최적화 진행
-    - 업데이트 될 때만 리렌더링을 하기 위해 조건을 설정
-    - **shouldComponentUpdate** 설정 예시
-    ```javascript
-      shouldComponentUpdate(nextProps, nextState) {
-        return this.props.todos !== nextProps.todos;
-      }
-    ```
+2. 최적화 진행
+  - 업데이트 될 때만 리렌더링을 하기 위해 조건을 설정
+  - **shouldComponentUpdate** 설정 예시
+  ```javascript
+    shouldComponentUpdate(nextProps, nextState) {
+      return this.props.todos !== nextProps.todos;
+    }
+  ```
 
-  3. 정리
-    - **shouldComponentUpdate**를 구현 상황(불필요한 렌더링을 방지하여 리렌더링 성능 향상)
-      - 컴포넌트 배열이 렌더링되는 리스트 컴포넌트일 때
-      - 리스트 컴포넌트 내부에 있는 아이템 컴포넌트일 때
-      - 하위 컴포넌트 개수가 많으며, 리렌더링되지 말아야 할 상황에서도 리렌더링이 진행될 때
-    - 리스트를 렌더링할 때는 언제나 **shouldComponentUpdate**를 구현하는 것을 습관화.
+3. 정리
+  - **shouldComponentUpdate**를 구현 상황(불필요한 렌더링을 방지하여 리렌더링 성능 향상)
+    - 컴포넌트 배열이 렌더링되는 리스트 컴포넌트일 때
+    - 리스트 컴포넌트 내부에 있는 아이템 컴포넌트일 때
+    - 하위 컴포넌트 개수가 많으며, 리렌더링되지 말아야 할 상황에서도 리렌더링이 진행될 때
+  - 리스트를 렌더링할 때는 언제나 **shouldComponentUpdate**를 구현하는 것을 습관화.
 <br />
 
 ### 12장 리덕스 개념 이해
@@ -177,7 +177,7 @@
 
 1. (Immutable.js)[https://facebook.github.io/immutable-js/]
 
-  a. Map
+	- Map
     > Immutable의 Map은 객체 대신 사용하는 데이터 구조.
     ```javascript
       const { Map, fromJS } = Immutable;
@@ -239,7 +239,7 @@
         const newData = data.merge({ a: 10, b: 10 });
       ```
 
-  b. List
+	- List
     > Immutable 데이터 구조로 배열 대신 사용. 배열과 동일하게 map, filter, sort, push, pop 함수를 내장하고 있다.
 
     ```javascript
@@ -254,7 +254,7 @@
         { value: 2 }
       ]);
     ```
-    > fromJS를 사용하면 내부 배열은 List로 만들고, 내부 객체는 Map으로 만든다. **toJs**를 사용하여 일반 배열로 변환.
+   fromJS를 사용하면 내부 배열은 List로 만들고, 내부 객체는 Map으로 만든다. **toJs**를 사용하여 일반 배열로 변환.
 
     - 값 읽어오기(**get, getIn**)
       ```javascript
@@ -353,7 +353,7 @@
     import { createAction, handleActions } from 'redux-actions';
   ```
 	
-	a. **createAction**을 이용한 액션 생성 자동화
+	- **createAction**을 이용한 액션 생성 자동화
     ```javascript
       // 이전
       export const increment = (index) => ({
@@ -392,7 +392,7 @@
       export const setColor = createAction(types.SET_COLOR, ,({index, color}) => ({index, color}));
     ```
 
-  b. switch 문 대신 **handleActions** 사용
+	- switch 문 대신 **handleActions** 사용
     - 첫 번째 파라미터로 액션에 따라 실핼할 함수들을 가진 객체를 넣어주고, 두 번째 파라미터로 상태의 기본 값(initialState)을 넣어준다. 
     ```javascript
       const reducer = handleActions({
@@ -455,43 +455,60 @@
 	- Promise
 
 		```javascript
-			function printLater(number) {
-				return new Promise(	// 새 Promise를 만들어서 리턴한다.
-					resolve => {
-						setTimeout(	// 1초 뒤 실행하도록 설정한다.
-							() => {
-								console.log(number);
-								resolve(number + 1);	// 현재 숫자에 1을 더한값을 반환한다.
-							}, 1000)
-					})
-			}
+		function printLater(number) {
+			return new Promise(	// 새 Promise를 만들어서 리턴한다.
+				resolve => {
+					setTimeout(	// 1초 뒤 실행하도록 설정한다.
+						() => {
+							console.log(number);
+							resolve(number + 1);	// 현재 숫자에 1을 더한값을 반환한다.
+						}, 1000)
+				})
+		}
 
-			printLater(1)
-			.then(() => printLater(2))
-			.then(() => printLater(3))
-			.then(() => printLater(4))
+		printLater(1)
+		.then(() => printLater(2))
+		.then(() => printLater(3))
+		.then(() => printLater(4))
 		```
 
 		```javascript
-			function printLater(number) {
-				return new Promise(	// 새 Promise를 만들어서 리턴한다.
-					(resolve, reject) => {	// resolve와 reject를 파라미터로 받는다.
-						if(number > 4) {
-							return reject('number is greater than 4');
-						}	// reject는 오류를 발생시킨다.
-						setTimeout(	// 1초 뒤 실행하도록 설정한다.
-							() => {
-								console.log(number);
-								resolve(number + 1);	// 현재 숫자에 1을 더한값을 반환한다.
-							}, 1000)
-					})
-			}
+		function printLater(number) {
+			return new Promise(	// 새 Promise를 만들어서 리턴한다.
+				(resolve, reject) => {	// resolve와 reject를 파라미터로 받는다.
+					if(number > 4) {
+						return reject('number is greater than 4');
+					}	// reject는 오류를 발생시킨다.
+					setTimeout(	// 1초 뒤 실행하도록 설정한다.
+						() => {
+							console.log(number);
+							resolve(number + 1);	// 현재 숫자에 1을 더한값을 반환한다.
+						}, 1000)
+				})
+		}
 
-			printLater(1)
-			.then((num) => printLater(num))
-			.then((num) => printLater(num))
-			.then((num) => printLater(num))
-			.then((num) => printLater(num))
-			.catch(e => console.log(e));
+		printLater(1)
+		.then((num) => printLater(num))
+		.then((num) => printLater(num))
+		.then((num) => printLater(num))
+		.then((num) => printLater(num))
+		.catch(e => console.log(e));
 		```
-	
+
+### 16장 react-router로 SPA 개발
+	- 라우트로 사용된 컴포넌트가 전달받는 props
+		- location: 현재 페이지의 주소 상태를 알려준다.
+		- match: <Route> 컴포넌트에서 설정한 path와 관련된 데이터들을 조회할 때 사용한다.
+		- history: 현재 라우터를 조작할 때 사용한다.
+			- history.push: push는 페이지 방문 기록을 남기지 않아서 페이지 이동 후 뒤로가기 버튼을 눌렀을 때 방금 전의 페이지가 아니라 방 금 전의 전 페이지가 나타난다.
+			- history.replace: `replace('/posts')` 형식으로 작성한다.
+			- history.action: 현재 history 상태를 알려준다. 페이지를 처음 방문했을 때 POP이 나타나고, 링크를 통한 라이퉁 또는 push를 통한 라우팅을 했을 때는 PUSH가 나타나며, replace를 통한 라우팅을 했을 때는  REPLACE가 나타난다. 
+			- history.block: 페이지에서 벗어날 때, 사용자에게 정말 페이지를 떠나겠냐고 묻는 창을 띄운다.
+
+				```javascript
+					const unblock = history.block('정말로 떠나시겠습니까?');
+					// 막는 작업을 취소할 때:
+					unblock();
+				```
+			- go, goBack, goForward는 이전 페이지 또는 다음 페이지로 이동하는 함수이다. ex) go(-1): 뒤로가기, go(1): 다음으로 가기
+	- withRouter로 기타 컴포넌트에서 라우터 접근: withRouter를 사용하여 라우트 외부 props에 접근할 수 있다. 
