@@ -1,16 +1,17 @@
+
 ## 리액트를 다루는 기술
 
 ### 3장 컴포넌트
-  - 더 많은 propTypes 종류
-    - array: 배열
+	- 더 많은 propTypes 종류
+		- array: 배열
     - bool: 참, 거짓
     - func: 함수
-    - number: 숫자 
-    - object: 객체 
-    - string: 문자열 
-    - symbol: ES6 문법의 심벌 개체 
-    - node: 렌더링할 수 있는 모든 것(숫자, 문자열, element 또는 이들로 구성된 배열) 
-    - element: 리액트 요소 
+    - number: 숫자
+    - object: 객체
+    - string: 문자열
+    - symbol: ES6 문법의 심벌 개체
+    - node: 렌더링할 수 있는 모든 것(숫자, 문자열, element 또는 이들로 구성된 배열)
+    - element: 리액트 요소
     - instanceOf(MyClass):특정 클래스의 인스턴스
     - oneOf(['Male', 'Female']): 주어진 배열 요소 중 값 하나
     - oneOfType([React.PropTypes.string, React.PropTypes.number]): 주어진 배열 안의 종류 중 하나
@@ -23,8 +24,8 @@
 ### 4장 이벤트 핸들링
 > [React SyntheticEvent](https://reactjs.org/docs/events.html)
 
-  - 이벤트 종류
-    - Clipboard
+	- 이벤트 종류
+		- Clipboard
     - Form
     - Composition
     - Mouse
@@ -58,13 +59,15 @@
 <br />
 
 ### 11장 컴포넌트 리렌더링 최적화
-  1. 문제점 찾기
-    - 리액트 개발자 도구의 Hightlight Updates 옵션을 활성화. 이 옵션을 활성화 하면 리렌더링 될 때마다 화면에 표시 된다. 리렌더링 빈도에 따라 하늘색->초록색->노란색->빨간색 순으로 나타난다.
-    - 크롬 개발자도구 [Performance] 탭 사용
-      - http://localhost:3000/?react_perf 페이지를 열고 크롬 개발자 도구 클릭하여 Performance탭을 연다. 
-      - 왼쪽 위 **녹화** 버튼(원모양)을 누른 후 문제가 되는 부분을 실행한다.(ex.input 부분에 글을 적는다.) 그런 다음 녹화 중지한다. 
-      - User Timing을 연다. (문제점 파악)
-    - 프로젝트를 작업하면서 버벅거린다고 느낄 때 성능 조사하고 상황에 따라 shouldComponentUpdate를 구현. 
+
+1. 문제점 찾기
+	- 리액트 개발자 도구의 Hightlight Updates 옵션을 활성화. 이 옵션을 활성화 하면 리렌더링 될 때마다 화면에 표시 된다. 리렌더링 빈도에 따라 하늘색->초록색->노란색->빨간색 순으로 나타난다.
+	- 크롬 개발자도구 [Performance] 탭 사용
+		- http://localhost:3000/?react_perf 페이지를 열고 크롬 개발자 도구 클릭하여 Performance탭을 연다. 
+		- 왼쪽 위 **녹화** 버튼(원모양)을 누른 후 문제가 되는 부분을 실행한다.(ex.input 부분에 글을 적는다.) 그런 다음 녹화 중지한다. 
+		- User Timing을 연다. (문제점 파악)
+    - 프로젝트를 작업하면서 버벅거린다고 느낄 때 성능 조사하고 상황에 따라 shouldComponentUpdate를 구현.
+
   2. 최적화 진행
     - 업데이트 될 때만 리렌더링을 하기 위해 조건을 설정
     - **shouldComponentUpdate** 설정 예시
@@ -73,6 +76,7 @@
         return this.props.todos !== nextProps.todos;
       }
     ```
+
   3. 정리
     - **shouldComponentUpdate**를 구현 상황(불필요한 렌더링을 방지하여 리렌더링 성능 향상)
       - 컴포넌트 배열이 렌더링되는 리스트 컴포넌트일 때
@@ -100,7 +104,7 @@
             diff: diff
           });
       ```
-      ```
+
 2. Reducers
   - 2개의 파라미터를 받는다. 첫 번째 파라미터는 현재 상태이고, 두번째 파라미터는 액션 객체.
   - 초기상태 initialState 값부터 먼저 설정.
@@ -170,7 +174,9 @@
 <br />
 
 ### 14장 리덕스, 더 편하게 사용
+
 1. (Immutable.js)[https://facebook.github.io/immutable-js/]
+
   a. Map
     > Immutable의 Map은 객체 대신 사용하는 데이터 구조.
     ```javascript
@@ -183,48 +189,59 @@
           e: 4
         }
       });
-    ```
+   	```
+
     - 자바 스크립트 객체로 변환(**toJS**)
       ```javascript
         const deserialized = data.toJS();
         console.lo(deserialized); // { a: 1, b: 2, c: { d: 3, e: 4 }}
       ```
+
     - 특정 키의 값 불러오기(**get**)
       ```javascript
         data.get('a');  // 1
       ```
+
     - 깊숙이 위치하는 값 불러오기(**getIn**)
       ```javascript
         data.getIn(['c', 'd']);  // 3
       ```
+
     - 값 설정 (**set**)
       ```javascript
         const newData = data.set(['a', 4]);
       ```
       > set을 한다고 해서 데이터가 실제로 변하는 것은 아니다. 값이 변경된 새 Map을 만드는 것이다.
+
       ```javascript
         console.log(newData === data);  // false
       ```
       > 서로 다른 Map이기 때문에 false를 반환한다. 기존 data값은 그대로 남아있고, 변화가 적용된 데이터를 newData에 저장하는 것이다.
+
     - 깊숙이 위치하는 값 수정(**setIn**)
       ```javascript
         const newData = data.setIn(['c', 'd'], 10);
       ```
+
     - 여러 값 동시에 설정(**mergeIn**)
       ```javascript
         const newData = data.mergeIn(['c'], { d: 10, e: 10 });
       ```
+
       - 아래와 같이 입력할 수도 있다.
       ```javascript
         const newData = data.setIn(['c', 'd'], 10) 
                             .setIn(['c', 'e'], 10);
       ```
+
       - 최상의 merge(**merge**)
       ```javascript
         const newData = data.merge({ a: 10, b: 10 });
       ```
+
   b. List
     > Immutable 데이터 구조로 배열 대신 사용. 배열과 동일하게 map, filter, sort, push, pop 함수를 내장하고 있다.
+
     ```javascript
       const { List, Map, fromJS } = Immutable;
       const list = List([
@@ -238,6 +255,7 @@
       ]);
     ```
     > fromJS를 사용하면 내부 배열은 List로 만들고, 내부 객체는 Map으로 만든다. **toJs**를 사용하여 일반 배열로 변환.
+
     - 값 읽어오기(**get, getIn**)
       ```javascript
       // n번째 원소 값은 get(n) 사용
@@ -245,6 +263,7 @@
       // 0번째 아이템의 value값
         list.getIn([0, 'value']);
       ```
+
     - 아이템 수정(**set, setIn, update**)
       ```javascript
       // 원소를 통째로 바꾸고 싶을 때 set 사용.
@@ -258,18 +277,21 @@
       */
       const newlist = list.update(0, item => item.set('value', item.get('value') * 5));
       ```
+
     - 아이템 추가(**push, unshift**)
       ```javascript
         const newList = list.push(Map({value: 3}));
       // List 맨 뒤가 아니라 맨 앞에 데이터를 추가하고 싶으면 push 대신 unshift를 사용
         const newList = list.unshift(Map({value: 0}));
       ```
+
     - 아이템 제거(**delete, pop**)
       ```javascript
         const newList = list.delete(1); // 인덱스가 1인 아이템 제거.
         // 마지막 아이템을 제거하고 싶다면 pop을 사용.
         const newList = list.pop();
       ```
+
     - List 크기 가져오기 (**size, isEmpty**)
       ```javascript
         console.log(list.size);
@@ -277,7 +299,7 @@
         list.isEmpty();
       ```
 
-  2. Ducks 파일 구조
+2. Ducks 파일 구조
     > (Ducks: Redux Reducer Bundles)[https://github.com/erikras/ducks-modular-redux]
     - Ducks 구조에서는 액션 타입, 액션 생성 함수, 리듀서를 한꺼번에 넣어서 관리하는데, 이를 모듈이라 한다.
     - Ducks 구조로 만드는 리덕스 모듈 생성 흐름
@@ -315,6 +337,7 @@
         }
       }
     ```
+
     - 규칙
       - export default를 이용하여 리듀서를 내보낸다.
       - export를 이용하여 액션 생성 함수를 내보낸다.
@@ -322,13 +345,15 @@
       - 외부 리듀서에서 모듈의 액션 타입이 필요할 때는 액션 타입을 내보낸다.
 
 3. redux-actions를 이용한 더 쉬운 액션 관리
-  ```
-    $ yarn add redux-actions
-  ```
+
+	- Install
+    `$ yarn add redux-actions`
+
   ```javascript
     import { createAction, handleActions } from 'redux-actions';
   ```
-  a. **createAction**을 이용한 액션 생성 자동화
+	
+	a. **createAction**을 이용한 액션 생성 자동화
     ```javascript
       // 이전
       export const increment = (index) => ({
@@ -346,6 +371,7 @@
         }
       */
     ```
+
     - 전달받은 파라미터가 여러 개일 때: 액션을 만들면 파라미터로 전달한 객체를 payload로 설정. 
     ```javascript
       export const setColor = createAction(types.SET_COLOR);
@@ -360,10 +386,12 @@
         }
       */
     ```
+
     - createAction의 두번째 파라니터에 payload 생성함수를 전달하여 코드상으로 명시할 수 있다.
     ```javascript
       export const setColor = createAction(types.SET_COLOR, ,({index, color}) => ({index, color}));
     ```
+
   b. switch 문 대신 **handleActions** 사용
     - 첫 번째 파라미터로 액션에 따라 실핼할 함수들을 가진 객체를 넣어주고, 두 번째 파라미터로 상태의 기본 값(initialState)을 넣어준다. 
     ```javascript
@@ -376,3 +404,94 @@
         })
       }, {counter: 0});
     ```
+<br />
+
+### 15장 Redux middleware(리덕스 미들웨어)와 외부 데이터 연동
+> middleware: dispatch했을 때 reducer에서 이를 처리하기 전에 사전에 지정된 작업들을 실행. 액션과 리듀서 사이의 중간자라고 할 수 있다.
+
+#### 비동기 작업을 처리하는 미들웨어
+1. redux-thunk
+	- 객체가 아닌 함수도 디스패치 가능. 함수를 디스패치할 수 있게 함으로써 일반 액션 객체로는 할 수 없는 작업이 가능하다.
+
+	- 1초 뒤에 액션이 디스패치 되는 예제 코드
+
+	```javascript
+		const INCREMENT_COUNTER = 'INCREMENT_COUNTER';
+
+		function increment() {
+			return {
+				type: INCREMENT_COUNTER
+			};
+		}
+
+		funcion incrementAsync() {
+			return dispatch => {	// dispatch를 파라미터로 가지는 함수를 리턴
+				setTimeout(() => {
+					// 1초 뒤 dispatc턴
+					dispatch(increment());
+				}, 1000);
+			}
+		}
+	```
+	나중에 store.dispatch(incrementAsync())를 했을 때 INCREMENT_COUNTER 액션을 1초 뒤에 디스패치 한다.
+
+	-조건에 따라 액션을 디스패치하거나 무시하는 코드
+
+	```javascript
+		function incrementIfOdd() {
+			return (dispatch, getState) => {
+				const { counter } = getState();
+
+				if(counter % 2 === 0) {
+					return;
+				}
+
+				dispatch(increment());
+			};
+		}
+	```
+
+2. 웹 요청 처리
+	- Promise
+
+		```javascript
+			function printLater(number) {
+				return new Promise(	// 새 Promise를 만들어서 리턴한다.
+					resolve => {
+						setTimeout(	// 1초 뒤 실행하도록 설정한다.
+							() => {
+								console.log(number);
+								resolve(number + 1);	// 현재 숫자에 1을 더한값을 반환한다.
+							}, 1000)
+					})
+			}
+
+			printLater(1)
+			.then(() => printLater(2))
+			.then(() => printLater(3))
+			.then(() => printLater(4))
+		```
+
+		```javascript
+			function printLater(number) {
+				return new Promise(	// 새 Promise를 만들어서 리턴한다.
+					(resolve, reject) => {	// resolve와 reject를 파라미터로 받는다.
+						if(number > 4) {
+							return reject('number is greater than 4');
+						}	// reject는 오류를 발생시킨다.
+						setTimeout(	// 1초 뒤 실행하도록 설정한다.
+							() => {
+								console.log(number);
+								resolve(number + 1);	// 현재 숫자에 1을 더한값을 반환한다.
+							}, 1000)
+					})
+			}
+
+			printLater(1)
+			.then((num) => printLater(num))
+			.then((num) => printLater(num))
+			.then((num) => printLater(num))
+			.then((num) => printLater(num))
+			.catch(e => console.log(e));
+		```
+	
