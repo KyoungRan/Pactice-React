@@ -144,24 +144,24 @@
 
 * ES6 문법: 전개연산자(...) 사용
 
-    ```javascript
-      function counter(state = initialState, action) {
-        switch(action.type) {
-          case INCREMENT:
-            return {
-              ...state,
-              number: state.number + action.diff
-            };
-          case DECREMENT:
-            return {
-              ...state,
-              number: state.number - action.diff
-            };
-          default: 
-            return state;
-        }
+  ```javascript
+    function counter(state = initialState, action) {
+      switch(action.type) {
+        case INCREMENT:
+          return {
+            ...state,
+            number: state.number + action.diff
+          };
+        case DECREMENT:
+          return {
+            ...state,
+            number: state.number - action.diff
+          };
+        default:
+          return state;
       }
-    ```
+    }
+  ```
 
 ### 3. Store
 
@@ -175,7 +175,7 @@
 
   ```javascript
     const unsubscribe = store.subscribe(() => console.log(store.getState()));
-    ```
+  ```
 
 * dispatching Actions
 
