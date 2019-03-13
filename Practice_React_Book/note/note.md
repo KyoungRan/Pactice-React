@@ -64,8 +64,8 @@
 
 * 리액트 개발자 도구의 Hightlight Updates 옵션을 활성화. 이 옵션을 활성화 하면 리렌더링 될 때마다 화면에 표시 된다. 리렌더링 빈도에 따라 하늘색->초록색->노란색->빨간색 순으로 나타난다.
 * 크롬 개발자도구 [Performance] 탭 사용
-  * http://localhost:3000/?react_perf 페이지를 열고 크롬 개발자 도구 클릭하여 Performance탭을 연다. 
-  * 왼쪽 위 **녹화** 버튼(원모양)을 누른 후 문제가 되는 부분을 실행한다.(ex.input 부분에 글을 적는다.) 그런 다음 녹화 중지한다. 
+  * `http://localhost:3000/?react_perf` 페이지를 열고 크롬 개발자 도구 클릭하여 Performance탭을 연다.
+  * 왼쪽 위 **녹화** 버튼(원모양)을 누른 후 문제가 되는 부분을 실행한다.(ex.input 부분에 글을 적는다.) 그런 다음 녹화 중지한다.
   * User Timing을 연다. (문제점 파악)
   * 프로젝트를 작업하면서 버벅거린다고 느낄 때 성능 조사하고 상황에 따라 shouldComponentUpdate를 구현.
 
@@ -305,7 +305,7 @@
     /*
       다른 방법 (update)
       첫번째 파라미터: 선택할 인덱스 값, 두번째 파라미터: 선택한 원소를 업데이트 하는 함수
-      const newList = list.setIn([9, 'value'], list.getIn([0, 'value'] * 5)); 와 같음 
+      const newList = list.setIn([9, 'value'], list.getIn([0, 'value'] * 5)); 와 같음
     */
     const newlist = list.update(0, item => item.set('value', item.get('value') * 5));
     ```
@@ -336,7 +336,7 @@
 
 ### 2. Ducks 파일 구조
 
-> (Ducks: Redux Reducer Bundles)[https://github.com/erikras/ducks-modular-redux]
+> `(Ducks: Redux Reducer Bundles)[https://github.com/erikras/ducks-modular-redux]`
 
 * Ducks 구조에서는 액션 타입, 액션 생성 함수, 리듀서를 한꺼번에 넣어서 관리하는데, 이를 모듈이라 한다.
 * Ducks 구조로 만드는 리덕스 모듈 생성 흐름
@@ -469,7 +469,7 @@
     }
 
     funcion incrementAsync() {
-      return dispatch => {	// dispatch를 파라미터로 가지는 함수를 리턴
+      return dispatch => {  // dispatch를 파라미터로 가지는 함수를 리턴
         setTimeout(() => {
           // 1초 뒤 dispatc턴
           dispatch(increment());
@@ -524,7 +524,7 @@
         (resolve, reject) => {  // resolve와 reject를 파라미터로 받는다.
           if(number > 4) {
             return reject('number is greater than 4');
-          }	// reject는 오류를 발생시킨다.
+          } // reject는 오류를 발생시킨다.
           setTimeout( // 1초 뒤 실행하도록 설정한다.
             () => {
               console.log(number);
@@ -564,3 +564,103 @@
 ## 17장 코드 스플리팅
   
   > 코드 스플리팅을 하게 되면, 지금 당장 필요한 코드가 아니라면 따로 분리시켜서, 나중에 필요할때 불러와서 사용 할 수 있다. 이를 통하여, 페이지의 로딩 속도를 개선 할 수 있다.
+
+## 18장 백엔드 프로그래밍: Node.js의 Koa 프레임워크
+
+### 1. Koa 기본 사용법
+
+* 미들웨어
+  `$ yarn add koa`
+  * 여기에서 app.use 파라미터로 함수가 하나의 미들웨어이다. Koa 미들웨어는 두 가지 파라미터를 받는다. (ctx, next)
+  * ctx는 웹 요청과 응답 정보를 지니고 있다. next는 현재 처리 중인 미들웨어의 다음 미들웨어를 호출하는 함수이다.
+  * 미들웨어를 등록하고 next를 실행하지 않으면 그 다음 미들웨어를 처리하지 않는다.
+
+  ```javascript
+    app.use((ctx) => {
+      ctx.body = 'hello world';
+    });
+  ```
+
+  * next()는 프로미스다. next를 실행하면 프로미스를 반환한다.
+
+  ```javascript
+    app.use((ctx), next) => {
+      console.log(1),
+      next().then(() => {
+        console.log('bye');
+      })
+    }
+  ```
+
+  * async/await 사용
+
+  ```javascript
+    app.use(async (ctx, next) => {
+      console.log(1);
+      await next();
+      console.log('bye');
+    })
+  ```
+
+* nodemon 사용: 코드를 변경되면 서버를 자동으로 재시작한다.
+  `yarn add --dev nodemon`
+
+  ```javascript
+    "scripts": {
+      "start": "node index.js",
+      "start:dev": "nodemon --watch src/ src/index.js"
+    }
+  ```
+
+### 2. koa-router 사용
+
+* 기본 사용법
+  `$ yarn add koa-router`
+
+  ```javascript
+    const Router = require('koa-router');
+
+    const router = new Router();
+    // 라우터 설정
+    router.get('/', (ctx) => {
+      ctx.body = '홈';
+    });
+
+    router.get('/about', (ctx) => {
+      ctx.body = '소개';
+    });
+
+    // app 인스턴스에 라우터 적용
+    app.use(router.routes()).use(router.allowedMethods());
+  ```
+
+* 라우트 파라미터와 쿼리
+  * `/about/:name`형식으로 콜론(:)을 사용하여 라우트 경로를 설정한다.
+  * `/about/:name?` 파라미터가 없을 수도 있고 있을 수도 있다면 파라미터 이름 뒤에 물음표를 사용하면 된다.
+  * 이렇게 설정한 파라미터는 `ctx.params` 객체에서 조회 가능하다.
+  * URL 쿼리의 경우, `/posts/?id=10`형식으로 요청했다면 `{id: '10' }` 형태의 객체를 `ctx.query`에서 조회할 수 있다. (문자열 형태의 쿼리스트링을 조회할 때는 `ctx.querystring`)
+
+  ```javascript
+    router.get('/about/:name?', (ctx) => {
+      const { name } = ctx.params;
+      // name의 존재 유무에 따라 다른 결과 출력
+      ctx.body = name ? `${name}의 소개`: '소개';
+    });
+
+    router.get('/posts', (ctx) => {
+      const { id } = ctx.query;
+      // id의 존재 유무에 따라 다른 결과 출력
+      ctx.body = id ? `포스트 #${id}` : '포스트 아이디가 없습니다.';
+    });
+  ```
+
+* REST API
+  * HTTP 메서드 종류
+    메서드 | 설명
+    -----|-----
+    GET | 데이터를 조회할 때 사용한다.
+    POST | 데이터를 등록할 때 사용한다. 인증 작업을 거칠 때 사용하기도 한다.
+    DELETE | 데이터를 지울 때 사용한다.
+    PUT | 데이터를 새 정보로 통째로 교체할 때 사용한다.
+    PATCH | 데이터의 특정 필드를 수정할 때 사용한다.
+  
