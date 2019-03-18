@@ -19,7 +19,7 @@
   * arrayOf([React.PropTypes.number]): 주어진 종류로 구성된 배열
   * objectOf(Reat.PropTypes.number): 주어진 종류의 값을 가진 객체
   * shape({name: React.PropTypes.string, age: React.PropTypes.number}): 주어진 스키마를 가진 객체
-  * any: 아무 종류    
+  * any: 아무 종류  
 
 ## 4장 이벤트 핸들링
 
@@ -51,7 +51,7 @@
 * shouldComponentUpdate: 컴포넌트가 리렌더링을 해야 할지 말아야 할지를 결정하는 메서드. 여기에서 false를 반환하면 아래 메서드들을 호출하지 않음.
 * render: 컴포넌트를 리렌더링
 * getSnapshotBeforeUpdate: 컴포넌트 변화를 DOM에 반영하기 바로 직전에 호출하는 메서드
-* componentDidUpdate: 컴포넌트의 업데이트 작업이 끝난 후 호출하는 메서드    
+* componentDidUpdate: 컴포넌트의 업데이트 작업이 끝난 후 호출하는 메서드  
 
 ## 10장 일정 관리 웹 애플리케이션 생성
 
@@ -660,10 +660,10 @@
 * REST API
   * HTTP 메서드 종류
 
-    |:메서드:|:설명:|
+    |메서드|설명|
     |-----|-----|
-    |:GET:|데이터를 조회할 때 사용한다.|
-    |:POST:|데이터를 등록할 때 사용한다. 인증 작업을 거칠 때 사용하기도 한다.|
-    |:DELETE:|데이터를 지울 때 사용한다.|
-    |:PUT:|데이터를 새 정보로 통째로 교체할 때 사용한다.|
-    |:PATCH:|데이터의 특정 필드를 수정할 때 사용한다.|
+    |GET|데이터를 조회할 때 사용한다.|
+    |POST|데이터를 등록할 때 사용한다. 인증 작업을 거칠 때 사용하기도 한다.|
+    |DELETE|데이터를 지울 때 사용한다.|
+    |PUT|데이터를 새 정보로 통째로 교체할 때 사용한다.|
+    |PATCH|데이터의 특정 필드를 수정할 때 사용한다.|
