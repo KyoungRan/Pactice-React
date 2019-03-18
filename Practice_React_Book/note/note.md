@@ -1,5 +1,5 @@
 
-# 리액트를 다루는 기술
+# 리액트를 다루는 기술  
 
 ## 3장 컴포넌트
 
@@ -19,7 +19,7 @@
   * arrayOf([React.PropTypes.number]): 주어진 종류로 구성된 배열
   * objectOf(Reat.PropTypes.number): 주어진 종류의 값을 가진 객체
   * shape({name: React.PropTypes.string, age: React.PropTypes.number}): 주어진 스키마를 가진 객체
-  * any: 아무 종류  
+  * any: 아무 종류    
 
 ## 4장 이벤트 핸들링
 
@@ -39,7 +39,7 @@
   * Wheel
   * Animation
   * Media
-  * Transition  
+  * Transition    
 
 ## 7장 컴포넌트의 라이프사이클 메서드
 
@@ -51,14 +51,14 @@
 * shouldComponentUpdate: 컴포넌트가 리렌더링을 해야 할지 말아야 할지를 결정하는 메서드. 여기에서 false를 반환하면 아래 메서드들을 호출하지 않음.
 * render: 컴포넌트를 리렌더링
 * getSnapshotBeforeUpdate: 컴포넌트 변화를 DOM에 반영하기 바로 직전에 호출하는 메서드
-* componentDidUpdate: 컴포넌트의 업데이트 작업이 끝난 후 호출하는 메서드  
+* componentDidUpdate: 컴포넌트의 업데이트 작업이 끝난 후 호출하는 메서드    
 
 ## 10장 일정 관리 웹 애플리케이션 생성
 
 * propagation
   * 지식 요소에도 onClick 이벤트가 설정되어 있고, 부모 요소에도 onClick 이벤트가 설정되어 있으면 자식 -> 부모 순으로 메서드를 실행하게 된다. 이를 **propagation**이라고 한다. 이를 방지하려면 자식 요소의 onClick 처리 함수 내부에서 **e.stopPropagation** 함수를 호출해준다.  
 
-## 11장 컴포넌트 리렌더링 최적화
+## 11장 컴포넌트 리렌더링 최적화  
 
 ### 1. 문제점 찾기
 
@@ -67,7 +67,7 @@
   * `http://localhost:3000/?react_perf` 페이지를 열고 크롬 개발자 도구 클릭하여 Performance탭을 연다.
   * 왼쪽 위 **녹화** 버튼(원모양)을 누른 후 문제가 되는 부분을 실행한다.(ex.input 부분에 글을 적는다.) 그런 다음 녹화 중지한다.
   * User Timing을 연다. (문제점 파악)
-  * 프로젝트를 작업하면서 버벅거린다고 느낄 때 성능 조사하고 상황에 따라 shouldComponentUpdate를 구현.
+  * 프로젝트를 작업하면서 버벅거린다고 느낄 때 성능 조사하고 상황에 따라 shouldComponentUpdate를 구현.  
 
 ### 2. 최적화 진행
 
@@ -88,7 +88,7 @@
   * 하위 컴포넌트 개수가 많으며, 리렌더링되지 말아야 할 상황에서도 리렌더링이 진행될 때
 * 리스트를 렌더링할 때는 언제나 **shouldComponentUpdate**를 구현하는 것을 습관화.  
 
-## 12장 리덕스 개념 이해
+## 12장 리덕스 개념 이해  
 
 ### 1. Actions(액션)
 
@@ -110,7 +110,7 @@
           type: DECREMENT,
           diff: diff
         });
-    ```
+    ```  
 
 ### 2. Reducers
 
@@ -161,7 +161,7 @@
           return state;
       }
     }
-  ```
+  ```  
 
 ### 3. Store
 
@@ -191,7 +191,7 @@
 * state는 읽기 전용.
 * 변화는 순수 함수로 구성. 예를들어 리듀서 함수 내부에서 외부 네트워크와 데이터베이스에 직접 접근하면 안 된다.(요청이 실패할 수도 있고, 외부 서버의 반환 값이 변할 수 있기 때문, new Date(), Math.random() 함수등도 사용하면 안됨.)  
 
-## 14장 리덕스, 더 편하게 사용
+## 14장 리덕스, 더 편하게 사용  
 
 ### 1. [Immutable.js](https://facebook.github.io/immutable-js/)
 
@@ -332,7 +332,7 @@
       console.log(list.size);
       // 비어 있는 지 확인
       list.isEmpty();
-    ```
+    ```  
 
 ### 2. Ducks 파일 구조
 
@@ -380,11 +380,12 @@
       * export default를 이용하여 리듀서를 내보낸다.
       * export를 이용하여 액션 생성 함수를 내보낸다.
       * 액션 타입 이름은 npm-module-or-app/reducer/ACTION_TYPE 형식으로 만든다. [라이브러리를 만들거나 애플리케이션을 여러 프로젝트로 나눈 것이 아니라면 맨 앞은 생략해도 된다.(예: counter/INCREMENT)].
-      * 외부 리듀서에서 모듈의 액션 타입이 필요할 때는 액션 타입을 내보낸다.
+      * 외부 리듀서에서 모듈의 액션 타입이 필요할 때는 액션 타입을 내보낸다.  
 
 ### 3. redux-actions를 이용한 더 쉬운 액션 관리
 
-* Install
+* Install  
+
   `$ yarn add redux-actions`
 
   ```javascript
@@ -449,7 +450,7 @@
 
 ## 15장 Redux middleware(리덕스 미들웨어)와 외부 데이터 연동
 
-> middleware: dispatch했을 때 reducer에서 이를 처리하기 전에 사전에 지정된 작업들을 실행. 액션과 리듀서 사이의 중간자라고 할 수 있다.
+> middleware: dispatch했을 때 reducer에서 이를 처리하기 전에 사전에 지정된 작업들을 실행. 액션과 리듀서 사이의 중간자라고 할 수 있다.  
 
 ### 비동기 작업을 처리하는 미들웨어
 
@@ -494,7 +495,7 @@
         dispatch(increment());
       };
     }
-  ```
+  ```  
 
 #### 2. 웹 요청 처리
 
@@ -539,7 +540,7 @@
     .then((num) => printLater(num))
     .then((num) => printLater(num))
     .catch(e => console.log(e));
-  ```
+  ```  
 
 ## 16장 react-router로 SPA 개발
 
@@ -563,13 +564,14 @@
 
 ## 17장 코드 스플리팅
   
-  > 코드 스플리팅을 하게 되면, 지금 당장 필요한 코드가 아니라면 따로 분리시켜서, 나중에 필요할때 불러와서 사용 할 수 있다. 이를 통하여, 페이지의 로딩 속도를 개선 할 수 있다.
+  > 코드 스플리팅을 하게 되면, 지금 당장 필요한 코드가 아니라면 따로 분리시켜서, 나중에 필요할때 불러와서 사용 할 수 있다. 이를 통하여, 페이지의 로딩 속도를 개선 할 수 있다.  
 
-## 18장 백엔드 프로그래밍: Node.js의 Koa 프레임워크
+## 18장 백엔드 프로그래밍: Node.js의 Koa 프레임워크  
 
 ### 1. Koa 기본 사용법
 
-* 미들웨어
+* 미들웨어  
+
   `$ yarn add koa`
   * 여기에서 app.use 파라미터로 함수가 하나의 미들웨어이다. Koa 미들웨어는 두 가지 파라미터를 받는다. (ctx, next)
   * ctx는 웹 요청과 응답 정보를 지니고 있다. next는 현재 처리 중인 미들웨어의 다음 미들웨어를 호출하는 함수이다.
@@ -610,11 +612,12 @@
       "start": "node index.js",
       "start:dev": "nodemon --watch src/ src/index.js"
     }
-  ```
+  ```  
 
 ### 2. koa-router 사용
 
-* 기본 사용법
+* 기본 사용법  
+
   `$ yarn add koa-router`
 
   ```javascript
@@ -656,11 +659,10 @@
 
 * REST API
   * HTTP 메서드 종류
-    메서드 | 설명
-    -----|-----
-    GET | 데이터를 조회할 때 사용한다.
-    POST | 데이터를 등록할 때 사용한다. 인증 작업을 거칠 때 사용하기도 한다.
-    DELETE | 데이터를 지울 때 사용한다.
-    PUT | 데이터를 새 정보로 통째로 교체할 때 사용한다.
-    PATCH | 데이터의 특정 필드를 수정할 때 사용한다.
-  
+    | 메서드 | 설명 |
+    | -----|----- |
+    | GET | 데이터를 조회할 때 사용한다. |
+    | POST | 데이터를 등록할 때 사용한다. 인증 작업을 거칠 때 사용하기도 한다. |
+    | DELETE | 데이터를 지울 때 사용한다. |
+    | PUT | 데이터를 새 정보로 통째로 교체할 때 사용한다. |
+    | PATCH | 데이터의 특정 필드를 수정할 때 사용한다. |
