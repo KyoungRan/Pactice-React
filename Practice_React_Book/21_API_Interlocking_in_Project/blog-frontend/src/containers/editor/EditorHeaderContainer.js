@@ -8,6 +8,7 @@ import queryString from 'query-string';
 import * as editorActions from 'store/modules/editor';
 
 class EditorHeaderContainer extends Component {
+  
   componentDidMount() {
     const { EditorActions, location } = this.props;
     EditorActions.initialize(); // 에디터를 초기화.
