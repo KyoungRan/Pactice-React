@@ -678,4 +678,47 @@
   // package.json
     (...)
     "proxy": "http://localhost:4000"
+  ```  
+
+* 관리자 로그인 인증 구현
+  * 서버에 세션 적용(https://github.com/koajs/session)
+
+  ```bash
+  $yarn add koa-session
+  ```
+
+  * `.env` 파일에 두 가지 환경 변수 설지
+
+  ```javascript
+  PORT=4000
+  MONGO_URI=mongodb://localhost/blog
+  ADMIN_PASS=react123
+  COOKIE_SIGN_KEY=C00KiE$1GNK3Y
+  ```
+
+  * `index.js`에 `koa-session`을 불러와 `COOKIE_SIGN_KEY` 환경 변수를 `signKey`라는 레퍼런스로 설정해 두고, 세션을 적용한다.
+
+  ```javascript
+  (...)
+  const session = require('koa-session');
+
+  const {
+    PORT: port = 4000,  // 값이 존재하지 않는다면 포트 4000번을 기본 값으로 사용
+    MONGO_URI: mongoURI,
+    COOKIE_SIGN_KEY: signKey
+  } = process.env;
+  (...)
+  const app = new Koa();
+  (...)
+  // 라우터 적용 전에 먼저 bodyParser 적용
+  app.use(bodyParser());
+
+  // 세션/키 적용
+  const sessionConfig = {
+    maxAge: 86400000,   // 하루
+    // signed: true(기본으로 설정되어 있다.)
+  };
+
+  app.use(session(sessionConfig, app));
+  app.keys = [signKey];
   ```
